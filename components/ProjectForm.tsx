@@ -7,7 +7,7 @@ import CustomMenu from "./CustomeMenu";
 import { categoryFilters } from "@/constants";
 import { FormState, ProjectInterface, SessionInterface } from "@/common.types";
 import Button from "./Button";
-import { createNewProject, fetchToken } from "@/lib/actions";
+import { createNewProject, fetchToken, updateProject } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -28,20 +28,31 @@ const ProjectForm = ({ type, session, project }: Props) => {
     category: project?.category || "",
   });
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     setIsSubmitting(true);
 
-    const token = await fetchToken();
+    const { token } = await fetchToken();
 
     try {
       if (type === "create") {
         await createNewProject(form, session?.user?.id, token);
+
         router.push("/");
       }
-    } catch (error: any) {
-      console.log(error);
+
+      if (type === "edit") {
+        await updateProject(form, project?.id as string, token);
+
+        router.push("/");
+      }
+    } catch (error) {
+      alert(
+        `Failed to ${
+          type === "create" ? "create" : "edit"
+        } a project. Try again!`
+      );
     } finally {
       setIsSubmitting(false);
     }
