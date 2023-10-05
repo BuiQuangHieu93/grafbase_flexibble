@@ -63,15 +63,13 @@ export const fetchAllProjects = (
 ) => {
   client.setHeader("x-api-key", apiKey);
 
-  const validCategory = category ?? "";
-
-  if (validCategory === "") {
+  if (category === "") {
     return makeGraphQLRequest(projectsQuery, {
       endcursor,
     });
   } else {
     return makeGraphQLRequest(projectsQuery, {
-      category: validCategory,
+      category: category,
       endcursor,
     });
   }
