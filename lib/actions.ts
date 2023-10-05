@@ -65,10 +65,16 @@ export const fetchAllProjects = (
 
   const validCategory = category ?? "";
 
-  return makeGraphQLRequest(projectsQuery, {
-    category: validCategory,
-    endcursor,
-  });
+  if (validCategory === "") {
+    return makeGraphQLRequest(projectsQuery, {
+      endcursor,
+    });
+  } else {
+    return makeGraphQLRequest(projectsQuery, {
+      category: validCategory,
+      endcursor,
+    });
+  }
 };
 
 export const createNewProject = async (
