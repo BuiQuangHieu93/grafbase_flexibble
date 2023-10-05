@@ -84,6 +84,37 @@ export const projectsQuery = `
   }
 `;
 
+export const projectsNullQuery = `
+query getProjects($endcursor: String) {
+  projectSearch(first: 8, after: $endcursor) {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        title
+        githubUrl
+        description
+        liveSiteUrl
+        id
+        image
+        category
+        createdBy {
+          id
+          email
+          name
+          avatarUrl
+        }
+      }
+    }
+  }
+}
+
+`;
+
 export const getProjectByIdQuery = `
   query GetProjectById($id: ID!) {
     project(by: { id: $id }) {

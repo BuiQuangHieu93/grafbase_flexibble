@@ -9,6 +9,7 @@ import {
   getProjectsOfUserQuery,
   getUserQuery,
   projectsQuery,
+  projectsNullQuery,
 } from "@/graphql";
 import { ProjectForm } from "@/common.types";
 
@@ -65,10 +66,17 @@ export const fetchAllProjects = (
 
   const validCategory = category ?? "";
 
-  return makeGraphQLRequest(projectsQuery, {
-    category: validCategory,
-    endcursor,
-  });
+  if (validCategory === "") {
+    return makeGraphQLRequest(projectsNullQuery, {
+      category: validCategory,
+      endcursor,
+    });
+  } else {
+    return makeGraphQLRequest(projectsQuery, {
+      category: validCategory,
+      endcursor,
+    });
+  }
 };
 
 export const createNewProject = async (
