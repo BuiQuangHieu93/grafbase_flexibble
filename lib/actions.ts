@@ -9,6 +9,7 @@ import {
   getProjectsOfUserQuery,
   getUserQuery,
   projectsQuery,
+  projectsNullCategoryQuery,
 } from "@/graphql";
 import { ProjectForm } from "@/common.types";
 
@@ -64,7 +65,7 @@ export const fetchAllProjects = (
   client.setHeader("x-api-key", apiKey);
 
   if (category === "") {
-    return makeGraphQLRequest(projectsQuery, {
+    return makeGraphQLRequest(projectsNullCategoryQuery, {
       endcursor,
     });
   } else {
